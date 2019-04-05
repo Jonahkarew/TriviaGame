@@ -1,42 +1,80 @@
-//make variables for questions, user score correct
-
-
-var questions = [
+ // create question bank
+ var questions = [
   {
-    question: "In 1924 there was a massive, 3 day, street brawl betweeen the Ku Klux Clan and what American university?",
-    answer: "Notre Dame",
-    choices: ["University of Chicago", "Notre Dame", "University of Virginia", "Harvard"],
+    question: 'Question 1',
+    answer: 'Answer 1',
+    choices: ['Answer 1', "Answer 2", "Answer 3"],
     userAnswer: ""
   },
   {
-    question: "Arguably the greatest pitcher in baseball history was George Edward 'Rube' Waddell, what was his career during the offseason?",
-    answer: "Alligator wrestler",
-    choices: ["Butcher", "Firefighter", "Alligator wrestler", "Tailor"],
+    question: 'Question 2',
+    answer: 'Answer 2',
+    choices: ['Answer 1', "Answer 2", "Answer 3"],
     userAnswer: ""
   },
   {
-    question: "The legends of vampires in the U.S. were most largely concentrated in the North-East, specifically New England, with the most recent 'vampire slaying' taking place as recently as the 1890's. While vampires aren't real, we now know that what was believed to be the effects of vampires was really what disease?",
-    answer:"Tuberculosis",
-    choices: ["Measles", "The Black Plague", "The flu", "Tuberculosis"],
-    userAnswer: "",
-  },
-  {
-    question: "John McCain was involved in the destruction of how many planes during his career as a pilot?",
-    answer: "4",
-    choices:["1", "2", "3", "4"],
+    question: 'Question 3',
+    answer: 'Answer 3',
+    choices: ['Answer 1', "Answer 2", "Answer 3"],
     userAnswer: ""
   }
 ];
 
-var userCorrect = 0;
+// set user score
+var correct = 0;
+
+// function to print all questions to page
+function renderQuestions() {
+  // clear out form
+  $("#quiz-form").empty();
 
 
-// make the questions appear on the page
-function renderQuestions(){
-questions.forEach(function(question, index){
-  var $question = $("<div>").addClass("form-group");
-  var $label = $("<h3>");
-  $label.text(questions.question);
-  $label.appendTo($question);
+
+  // Loop through questions array
+  questions.forEach(function (question, index) {
+    // create div to hold question
+    var $question = $("<div>").addClass("form-group");
+
+    var $label = $("<h4>")
+      .text(question.question)
+      .appendTo($question);
+
+    question.choices = question.choices.sort(function() {
+      return .5 - Math.random();
+    });
+    
+    for (var i = 0; i < question.choices.length; i++) {
+      var $choice = $('<div>');
+      $choice.addClass('form-check form-check-inline');
+      var $radio = $('<input>');
+      $radio
+        .attr({
+          type: "radio",
+          value: question.choices[i],
+          name: index,
+          class: "form-check-input"
+        })
+        .appendTo($choice);
+      var $choiceLabel = $('<label>');
+      $choiceLabel
+        .text(question.choices[i])
+        .addClass('form-check-label')
+        .appendTo($choice);
+      $choice.appendTo($question);
+    }
+    $("#quiz-form").append($question);
+  });
+}
+$("#quiz-form").on("change", ".form-check-input", function() {
+  console.log(this);
+  var questionIndex = $(this).attr("name");
+
+  console.log(questions[questionIndex]);
+
+  var answer = $(this).val();
+
+  questions[questionIndex].userAnswer = answer;
+  
 });
-};
+
+renderQuestions();
