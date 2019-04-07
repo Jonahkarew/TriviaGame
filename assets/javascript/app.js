@@ -83,7 +83,7 @@ function displayQuestions() {
 
           value: question.choices[i],
           type: "radio",
-          name: index[i],
+          name: index,
           class: "form-check-input"
         })
         // add the options to the page
